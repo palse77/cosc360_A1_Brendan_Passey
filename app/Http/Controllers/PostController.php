@@ -9,6 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
+        //dd(Post::factory()->create());
         $posts = Post::all();
         
         return view('Posts.index', compact('posts'));
