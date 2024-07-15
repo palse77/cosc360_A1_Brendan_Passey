@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 
-Route::resource('posts', PostController::class)->middleware(('auth'));
+
 Auth::routes();
 
 

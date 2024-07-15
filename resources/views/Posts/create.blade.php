@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Blog Posts Create</h1>
+    <h1>Create Blog Post</h1>
     <a href="{{url()->previous()}}">Back</a> 
 <form action="{{route('posts.store')}}" method="POST">
     @csrf
