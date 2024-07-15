@@ -8,4 +8,5 @@
         <li>Title: {{$post->title}}</li>
         <li>Content: {{$post->content}}</li>
     </ul>
+    <a href="{{route('posts.edit', $post->id)}}" class="btn btn-primary">Edit Post</a>
 @endsection
