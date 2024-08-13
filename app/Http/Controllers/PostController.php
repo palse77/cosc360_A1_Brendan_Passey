@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 
 class PostController extends Controller
 {
@@ -76,5 +79,10 @@ class PostController extends Controller
         }
         $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+    }
+
+    public function test(){
+        $results = User::where('created_at', '>', new DateTime('2024-07-14 11:36:34'))->get();
+        dd($results);
     }
 }
