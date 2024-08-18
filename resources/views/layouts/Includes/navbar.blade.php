@@ -13,8 +13,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="#">
-              <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{{ route('admin.users.index') }}">
+              <svg class="bi"><use xlink:href="#house-fill"/></svg>
               Users
             </a>
           </li>
