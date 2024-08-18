@@ -15,7 +15,7 @@
         <ul> 
             @foreach ($posts as $author => $authorPosts)  <!-- $authorPosts is now a collection of posts -->
             <h2>{{ $author }}</h2>
-            <p>{{ $authorPosts->first()->user->email }}</p>
+            
             <ul>
                 @foreach ($authorPosts as $post)  <!-- Loop through each post in the collection -->
                     <li>
