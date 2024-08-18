@@ -14,14 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(5)
+        //User::truncate();
+        User::factory(1)
         ->has(Post::factory(10))
-        ->create();
+        ->create(['admin' => true]);
+
+        User::factory(9)
+        ->has(Post::factory(10))
+        ->create(['admin' => false]);
 
         //User::factory()->create([
         //    'name' => 'Test User',
         //    'email' => 'test@example.com',
         //]);
-        //$this->call(PostSeeder::class);
+        //$this->call(PostSeeder::class); 
     }
 }

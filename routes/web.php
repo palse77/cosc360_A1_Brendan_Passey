@@ -4,6 +4,9 @@ use App\Http\Controllers\PostController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Author\PostController as AuthorPostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,4 +22,19 @@ Route::get('/test', [PostController::class, 'test']);
 
 Auth::routes();
 
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    // Routes for managing users
+    Route::resource('/users', AdminUserController::class);
 
+    // Routes for managing blog posts
+    Route::resource('/posts', AdminPostController::class);
+});
+
+// Author Routes
+Route::prefix('author')->group(function () {
+    // Routes for managing their own blog posts
+    Route::resource('/posts', AuthorPostController::class);
+});
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
