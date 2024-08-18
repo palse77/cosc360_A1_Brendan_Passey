@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth']], function() {
         return redirect()->route('author.posts.index');  // Redirect author to author post index
     })->name('home');
 
-    // General posts routes (applies to both admin and author, without a prefix)
+    
     Route::resource('posts', PostController::class);  // This ensures 'posts.create' works
 
     // Author Routes (non-admin)
@@ -37,10 +37,10 @@ Route::get('/test', [PostController::class, 'test']);
 
 Auth::routes();
 
-// Admin Routes
-Route::prefix('admin')->group(function () {
-    Route::resource('/posts', AdminPostController::class)->names('admin.posts');  // Admin-specific routes
-});
-Route::prefix('admin')->group(function () {
-    Route::resource('/users', AdminUserController::class)->names('admin.users');
+// Admin Routes with AdminMiddleware applied
+Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::prefix('admin')->group(function () {
+        Route::resource('/posts', AdminPostController::class)->names('admin.posts');  // Admin-specific routes
+        Route::resource('/users', AdminUserController::class)->names('admin.users');  // Admin-specific routes
+    });
 });

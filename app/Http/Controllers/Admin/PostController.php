@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,36 +9,50 @@ use App\Models\Post;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
+
 class PostController extends Controller
 {
     public function index()
     {
+        // Ensure the user is an admin
+        if (!Auth::user()->admin) {
+            abort(403, 'Unauthorized access.');
+        }
+
         $posts = Post::with('user')->get()->groupBy('user.name');
         return view('Posts.admin.index', compact('posts'));
     }
 
     public function create()
     {
+        // Ensure the user is an admin
+        if (!Auth::user()->admin) {
+            abort(403, 'Unauthorized access.');
+        }
+
         return view('Posts.admin.create');
     }
 
     public function show(Post $post)
     {
-        // Allow access to the post if the user is an admin or the post owner
-        
-            return view('Posts.admin.show', compact('post'));
-        
+        // Ensure the user is an admin or the owner of the post
+        if (!Auth::user()->admin && Auth::id() != $post->user_id) {
+            abort(403, 'Unauthorized access.');
+        }
 
-        // If not an admin and not the post owner, deny access
-        
+        return view('Posts.admin.show', compact('post'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
+        // Ensure the user is an admin
+        if (!Auth::user()->admin) {
+            abort(403, 'Unauthorized access.');
+        }
+
         $request->validate([
             'title' => 'required',
             'content' => 'required',
@@ -53,13 +68,13 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        // Allow access to edit the post if the user is an admin or the post owner
-        Log::info('Admin editing post: ', ['user_id' => Auth::id(), 'post_id' => $post->id]);
-            return view('Posts.admin.edit', compact('post'));
-        
+        // Ensure the user is an admin or the owner of the post
+        if (!Auth::user()->admin && Auth::id() != $post->user_id) {
+            abort(403, 'Unauthorized access.');
+        }
 
-        // If not an admin and not the post owner, deny access
-        
+        Log::info('Admin editing post: ', ['user_id' => Auth::id(), 'post_id' => $post->id]);
+        return view('Posts.admin.edit', compact('post'));
     }
 
     /**
@@ -67,40 +82,43 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        // Allow access to update the post if the user is an admin or the post owner
-        
-            $request->validate([
-                'title' => 'required',
-                'content' => 'required',
-            ]);
-
-            $post->update($request->all());
-
-            return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
+        // Ensure the user is an admin or the owner of the post
+        if (!Auth::user()->admin && Auth::id() != $post->user_id) {
+            abort(403, 'Unauthorized access.');
         }
 
-        // If not an admin and not the post owner, deny access
-        
-    
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+
+        $post->update($request->all());
+
+        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Post $post)
     {
-        // Allow access to delete the post if the user is an admin or the post owner
-        
-            $post->delete();
+        // Ensure the user is an admin or the owner of the post
+        if (!Auth::user()->admin && Auth::id() != $post->user_id) {
+            abort(403, 'Unauthorized access.');
+        }
 
-            return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
-        
+        $post->delete();
 
-        // If not an admin and not the post owner, deny access
-        
+        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
     }
 
     public function test()
     {
+        // Ensure the user is an admin
+        if (!Auth::user()->admin) {
+            abort(403, 'Unauthorized access.');
+        }
+
         $results = User::where('created_at', '>', new DateTime('2024-07-14 11:36:34'))->get();
         dd($results);
     }
