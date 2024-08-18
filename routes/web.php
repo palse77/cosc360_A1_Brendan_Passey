@@ -22,19 +22,19 @@ Route::get('/test', [PostController::class, 'test']);
 
 Auth::routes();
 
-// Admin Routes
-Route::prefix('admin')->group(function () {
-    // Routes for managing users
-    Route::resource('/users', AdminUserController::class);
+// // Admin Routes
+// Route::prefix('admin')->group(function () {
+//     // Routes for managing users
+//     Route::resource('/users', AdminUserController::class)->names('admin.users');
 
-    // Routes for managing blog posts
-    Route::resource('/posts', AdminPostController::class);
-});
+//     // Routes for managing blog posts
+//     Route::resource('/posts', AdminPostController::class)->names('admin.posts');
+// });
 
-// Author Routes
-Route::prefix('author')->group(function () {
-    // Routes for managing their own blog posts
-    Route::resource('/posts', AuthorPostController::class);
-});
+// // Author Routes
+// Route::prefix('author')->group(function () {
+//     // Routes for managing their own blog posts
+//     Route::resource('/posts', AuthorPostController::class)->names('author.posts');
+// });
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
