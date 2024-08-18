@@ -6,20 +6,24 @@
         <h1 class="h2">Blog Posts</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a href="{{route('posts.create')}}" class="btn btn-sm btn-outline-secondary">Create Post</a>       
+                <a href="{{route('admin.posts.create')}}" class="btn btn-sm btn-outline-secondary">Create Post</a>       
             </div>
         </div>
     </div>
 
-    {{-- <h1>Blog Posts</h1>
-    <a href="{{route('posts.create')}}" class="btn btn-primary">Create Post</a> --}}
     <div>
         <ul> 
-            @foreach ($posts as $post)
-                <li> 
-                    <a href="{{route('posts.show', $post->id)}}">{{ $post->title}} </a>
-                </li>
-            @endforeach
+            @foreach ($posts as $author => $authorPosts)  <!-- $authorPosts is now a collection of posts -->
+            <h2>{{ $author }}</h2>
+            <p>{{ $authorPosts->first()->user->email }}</p>
+            <ul>
+                @foreach ($authorPosts as $post)  <!-- Loop through each post in the collection -->
+                    <li>
+                        <a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a>  <!-- Access post properties -->
+                    </li>
+                @endforeach
+            </ul>
+        @endforeach
         </ul>
     </div>
     @if (session('success'))

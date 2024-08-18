@@ -1,40 +1,42 @@
 <?php
+
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController;
-use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Author\PostController as AuthorPostController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::group(['middleware' => ['auth']], function() {
-	Route::resource('posts', PostController::class);
+    // Home Route Logic for Admin and Author
+    Route::get('/home', function() {
+        if (Auth::user()->admin) {
+            return redirect()->route('admin.posts.index');  // Redirect admin to admin post index
+        }
+        return redirect()->route('author.posts.index');  // Redirect author to author post index
+    })->name('home');
+
+    // General posts routes (applies to both admin and author, without a prefix)
+    Route::resource('posts', PostController::class);  // This ensures 'posts.create' works
+
+    // Author Routes (non-admin)
+    Route::prefix('author')->group(function () {
+        Route::resource('posts', PostController::class)->names('author.posts');  // Route authors to the standard PostController
+    });
+
+    // Other general routes for authenticated users
     Route::resource('photos', PhotoController::class);
-    Route::get('/home', [PostController::class, 'index'])->name('home');
 });
 
 Route::get('/test', [PostController::class, 'test']);
 
 Auth::routes();
 
-// // Admin Routes
-// Route::prefix('admin')->group(function () {
-//     // Routes for managing users
-//     Route::resource('/users', AdminUserController::class)->names('admin.users');
-
-//     // Routes for managing blog posts
-//     Route::resource('/posts', AdminPostController::class)->names('admin.posts');
-// });
-
-// // Author Routes
-// Route::prefix('author')->group(function () {
-//     // Routes for managing their own blog posts
-//     Route::resource('/posts', AuthorPostController::class)->names('author.posts');
-// });
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::resource('/posts', AdminPostController::class)->names('admin.posts');  // Admin-specific routes
+});

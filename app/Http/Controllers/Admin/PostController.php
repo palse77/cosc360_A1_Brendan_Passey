@@ -13,19 +13,19 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Auth::user()->posts;
-        return view('Posts.index', compact('posts'));
+        $posts = Post::with('user')->get()->groupBy('user.name');
+        return view('Posts.admin.index', compact('posts'));
     }
     public function create()
     {
-        return view('Posts.create');
+        return view('Posts.admin.create');
     }
     public function show(Post $post)
     {
         if(Auth::id() != $post->user_id) {
             abort(403);
         }
-        return view('Posts.show', compact('post') );
+        return view('Posts.admin.show', compact('post') );
     }
 
 
@@ -50,7 +50,7 @@ class PostController extends Controller
         if (Auth::id() != $post->user_id) {
             abort(403);
         }
-        return view('Posts.edit', compact('post'));
+        return view('Posts.admin.edit', compact('post'));
     }
 
     /**
@@ -78,7 +78,7 @@ class PostController extends Controller
             abort(403);
         }
         $post->delete();
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('posts.admin.index')->with('success', 'Post deleted successfully.');
     }
 
     public function test(){
