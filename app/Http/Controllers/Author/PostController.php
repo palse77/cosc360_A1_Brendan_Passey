@@ -59,7 +59,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         if (Auth::id() != $post->user_id) {
-            abort(403);
+            //abort(403);
         }
         $request->validate([
             'title' => 'required',

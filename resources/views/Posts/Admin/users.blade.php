@@ -4,7 +4,7 @@
 @section('content')
     <h1>Create Blog Post</h1>
     <a href="{{url()->previous()}}">Back</a> 
-<form action="{{route('admin.posts.store')}}" method="POST">
+<form action="{{route('posts.store')}}" method="POST">
     @csrf
     <div class="form-group">
         <label for="title">Title</label>

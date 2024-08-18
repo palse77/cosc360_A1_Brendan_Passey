@@ -3,6 +3,7 @@
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Author\PostController as AuthorPostController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,7 @@ Auth::routes();
 // Admin Routes
 Route::prefix('admin')->group(function () {
     Route::resource('/posts', AdminPostController::class)->names('admin.posts');  // Admin-specific routes
+});
+Route::prefix('admin')->group(function () {
+    Route::resource('/users', AdminUserController::class)->names('admin.users');
 });

@@ -23,7 +23,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         if(Auth::id() != $post->user_id) {
-            abort(403);
+            //abort(403);
         }
         return view('Posts.show', compact('post') );
     }
@@ -59,7 +59,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         if (Auth::id() != $post->user_id) {
-            abort(403);
+            //abort(403);
         }
         $request->validate([
             'title' => 'required',
@@ -75,7 +75,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         if (Auth::id() != $post->user_id) {
-            abort(403);
+            //abort(403);
         }
         $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
