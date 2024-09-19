@@ -17,4 +17,20 @@ class PostController extends Controller
 
         ], 200);
     }
+
+    public function show($id)
+{
+    // Find the post by its ID
+    $post = Post::find($id);
+
+    // Check if the post exists
+    if (!$post) {
+        return response()->json(['message' => 'Post not found'], 404);
+    }
+
+    // Return the post as a JSON response
+    return response()->json($post);
 }
+}
+
+
