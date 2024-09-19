@@ -13,13 +13,13 @@
 
     <div>
         <ul> 
-            @foreach ($posts as $author => $authorPosts)  <!-- $authorPosts is now a collection of posts -->
+            @foreach ($posts as $author => $authorPosts)  
             <h2>{{ $author }}</h2>
             
             <ul>
-                @foreach ($authorPosts as $post)  <!-- Loop through each post in the collection -->
+                @foreach ($authorPosts as $post)  
                     <li>
-                        <a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a>  <!-- Access post properties -->
+                        <a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a>  
                     </li>
                 @endforeach
             </ul>

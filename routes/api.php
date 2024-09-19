@@ -7,5 +7,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user', [UserController::class, 'index']);
 
-Route::get('/posts', [PostController::class, 'index']); //data?
+Route::get('/posts', [PostController::class, 'index']); 
 Route::get('/posts/{id}', [PostController::class, 'show']);

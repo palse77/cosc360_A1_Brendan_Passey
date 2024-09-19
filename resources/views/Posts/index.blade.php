@@ -11,8 +11,7 @@
         </div>
     </div>
 
-    {{-- <h1>Blog Posts</h1>
-    <a href="{{route('posts.create')}}" class="btn btn-primary">Create Post</a> --}}
+
     <div>
         <ul> 
             @foreach ($posts as $post)
